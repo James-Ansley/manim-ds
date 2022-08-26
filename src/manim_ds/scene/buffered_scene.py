@@ -1,4 +1,3 @@
-import abc
 from itertools import chain
 
 from manim import Scene, config
@@ -13,19 +12,15 @@ def _hoist(action):
     return action
 
 
-class BufferedScene(Scene, abc.ABC):
-    def __init__(self):
-        super().__init__()
-        self.buffer = []
-
+class BufferedScene(Scene):
     def do(self, action):
         action = _hoist(action)
-        self.buffer.append(action.animations)
+        self.play(*(a() for a in action.animations))
         return action.value
 
     def do_all(self, *actions):
-        self.buffer.append(chain(*(_hoist(a).animations for a in actions)))
-        return (a.value for a in actions)
+        animations = chain(*(_hoist(a).animations for a in actions))
+        self.play(*(a() for a in animations))
 
     def set_size(self, width, height):
         pixel_width = CONFIG["pixelsPerUnit"] * width
@@ -36,13 +31,3 @@ class BufferedScene(Scene, abc.ABC):
         self.camera.frame_height = height
         self.camera.pixel_width = pixel_width
         self.camera.pixel_height = pixel_height
-
-    def construct(self):
-        self.camera.background_color = CONFIG["background"]
-        self._construct()
-        for animations in self.buffer:
-            self.play(*(a() for a in animations))
-
-    @abc.abstractmethod
-    def _construct(self):
-        ...

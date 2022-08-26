@@ -23,13 +23,13 @@ class MList(VGroup, BufferedMobject):
             elt1.shade(ORANGE),
             elt2.shade(ORANGE),
             value=cmp(elt1.data, elt2.data)
-        ).then(Mobject.shift, UP)
+        ).then("shift", UP)
 
     def uncompare(self, i, j):
         elt1, elt2 = self[i], self[j]
         return Action(
             elt1.unshade(), elt2.unshade(), value=None
-        ).then(Mobject.shift, DOWN)
+        ).then("shift", DOWN)
 
     def swap(self, i, j):
         elt1, elt2 = self[i], self[j]

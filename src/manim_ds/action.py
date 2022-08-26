@@ -6,10 +6,9 @@ class Action:
         self.value = value
         self.animations = chain(*(_hoist(a) for a in animations))
 
-    def then(self, animation, *args):
+    def then(self, animation, *args, **kwargs):
         self.animations = (
-            # lambda new=animation, a=a: getattr(a(), new)(*args)
-            lambda new=animation, a=a: new(a(), *args)
+            lambda new=animation, a=a: getattr(a(), new)(*args, **kwargs)
             for a in self.animations
         )
         return self
