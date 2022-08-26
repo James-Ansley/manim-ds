@@ -1,1 +1,1 @@
-from .buffered_scene import BufferedScene
+from .action_scene import ActionScene

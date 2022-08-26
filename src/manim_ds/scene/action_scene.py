@@ -12,7 +12,10 @@ def _hoist(action):
     return action
 
 
-class BufferedScene(Scene):
+class ActionScene(Scene):
+    def setup(self):
+        self.camera.background_color = CONFIG["background"]
+
     def do(self, action):
         action = _hoist(action)
         self.play(*(a() for a in action.animations))
@@ -21,6 +24,7 @@ class BufferedScene(Scene):
     def do_all(self, *actions):
         animations = chain(*(_hoist(a).animations for a in actions))
         self.play(*(a() for a in animations))
+        return (a.value for a in actions)
 
     def set_size(self, width, height):
         pixel_width = CONFIG["pixelsPerUnit"] * width

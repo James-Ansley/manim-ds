@@ -7,6 +7,7 @@ class Action:
         self.animations = chain(*(_hoist(a) for a in animations))
 
     def then(self, animation, *args, **kwargs):
+        # ToDo - There has to be a better way
         self.animations = (
             lambda new=animation, a=a: getattr(a(), new)(*args, **kwargs)
             for a in self.animations

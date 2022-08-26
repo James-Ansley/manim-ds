@@ -4,11 +4,11 @@ from operator import lt
 from manim import DOWN, GREEN
 
 from manim_ds.config import CONFIG
-from manim_ds.scene import BufferedScene
+from manim_ds.scene import ActionScene
 from manim_ds.structures import MList, Pointer
 
 
-class BubbleSortScene(BufferedScene):
+class BubbleSortScene(ActionScene):
     def __init__(self):
         super().__init__()
         self.set_size(7, 3)
@@ -29,7 +29,7 @@ class BubbleSortScene(BufferedScene):
         self.do_all(*(e.unshade() for e in mlist))
 
 
-class SelectionSortScene(BufferedScene):
+class SelectionSortScene(ActionScene):
     def __init__(self):
         super().__init__()
         self.set_size(7, 3)
@@ -37,10 +37,13 @@ class SelectionSortScene(BufferedScene):
         self.camera.background_color = CONFIG["background"]
 
     def construct(self):
-        data = [4, 3, 2, 0, 1]
         do = self.do
-        mlist = do(MList(data).create())
-        pointer = do(Pointer().next_to(mlist[0], DOWN).create())
+        do_all = self.do_all
+
+        mlist = MList([4, 3, 2, 0, 1]).shift(DOWN / 2)
+        pointer = Pointer().next_to(mlist[0], DOWN)
+
+        do_all(mlist.create(), pointer.create())
         for i in range(len(mlist) - 1):
             min_idx = i
             do(pointer.point_to(mlist[min_idx], mlist))
@@ -53,15 +56,14 @@ class SelectionSortScene(BufferedScene):
             if i != min_idx:
                 do(mlist.swap(i, min_idx))
             do(mlist[i].shade(GREEN))
-        self.do_all(mlist[-1].shade(GREEN), pointer.uncreate())
-        self.do_all(*(elt.unshade() for elt in mlist))
+        do_all(mlist[-1].shade(GREEN), pointer.uncreate())
+        do_all(*(elt.unshade() for elt in mlist))
 
 
-class SelectionSortOverviewScene(BufferedScene):
+class SelectionSortOverviewScene(ActionScene):
     def __init__(self):
         super().__init__()
         self.set_size(7, 3)
-        self.camera.background_color = CONFIG["background"]
 
     def construct(self):
         data = [4, 3, 2, 0, 1]
