@@ -1,1 +1,2 @@
 manim~=0.16.0.post0
+tomli~=2.0.1

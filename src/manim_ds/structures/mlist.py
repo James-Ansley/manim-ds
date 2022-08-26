@@ -4,10 +4,10 @@ from contextlib import contextmanager
 from manim import *
 from manim import FadeIn
 
-from .animations import GLOBAL_ANIMATION_BUFFER as BUFFER
-from .colours import BACKGROUND, COLOUR
+from ..config import CONFIG
+from ..scene.global_buffer import GLOBAL_ANIMATION_BUFFER as BUFFER
 
-__all__ = ["MList", "Pointer"]
+__all__ = ["MList"]
 
 
 class BufferedMobject(Mobject):
@@ -82,46 +82,19 @@ class MList(VGroup, BufferedMobject):
 class _ListElement(Square):
     def __init__(self, value, **kwargs):
         kwargs.setdefault("side_length", 1.0)
-        kwargs.setdefault("color", COLOUR)
+        kwargs.setdefault("color", CONFIG["colour"])
+        kwargs.setdefault("fill_color", CONFIG["background"])
+        kwargs.setdefault("fill_opacity", 0.5)
         super().__init__(**kwargs)
         self.data = value
-        self.text = Text(str(value), color=COLOUR).move_to(self.get_center())
-        self.add(self.text)
-        self.selector = None
-        self.colours = [BACKGROUND]
+        self.add(
+            Text(str(value), color=kwargs["color"])
+            .move_to(self.get_center())
+        )
+        self.background = kwargs["fill_color"]
 
     def shade(self, colour):
-        self.colours.append(colour)
-        return self.animate.set_fill(colour, opacity=0.5, family=False)
+        return self.animate.set_fill(colour, family=False)
 
     def unshade(self):
-        self.colours.pop()
-        return self.animate.set_fill(self.colours[-1], opacity=0, family=False)
-
-
-class Pointer(Polygon, BufferedMobject):
-    def __init__(self, side_length=1, colour=COLOUR, pointing=UP, **kwargs):
-        points = (
-            [-side_length / 4, 0, 0],
-            [side_length / 4, 0, 0],
-            [0, side_length / 8 * pointing[1], 0]
-        )
-        self.pointing = pointing
-        kwargs.setdefault("color", colour)
-        kwargs.setdefault("fill_color", colour)
-        kwargs.setdefault("fill_opacity", 1.0)
-        kwargs.setdefault("stroke_opacity", 1.0)
-        super().__init__(*points, **kwargs)
-
-    def point_to(self, elt, aligned_to=None):
-        if aligned_to is None:
-            aligned_to = elt
-        BUFFER.push(
-            lambda e=elt, a=aligned_to:
-            (
-                self.animate
-                .next_to(e, -self.pointing)
-                .align_to(a, -self.pointing)
-                .shift(-self.pointing * DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)
-            )
-        )
+        return self.animate.set_fill(self.background, family=False)

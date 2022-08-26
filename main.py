@@ -2,8 +2,9 @@ import operator
 
 from manim import *
 
-from manim_ds.animations import BufferedScene, GLOBAL_ANIMATION_BUFFER as BUFFER
-from manim_ds.mlist import *
+from manim_ds.scene import GLOBAL_ANIMATION_BUFFER as BUFFER
+from manim_ds.scene import BufferedScene
+from manim_ds.structures import *
 
 
 def bubble_sort(data):
