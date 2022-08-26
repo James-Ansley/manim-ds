@@ -1,0 +1,4 @@
+from manim import BLACK, WHITE
+
+BACKGROUND = WHITE
+COLOUR = BLACK
