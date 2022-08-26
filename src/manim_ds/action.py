@@ -2,7 +2,7 @@ from itertools import chain
 
 
 class Action:
-    def __init__(self, value, *animations):
+    def __init__(self, *animations, value=None):
         self.value = value
         self.animations = chain(*(_hoist(a) for a in animations))
 

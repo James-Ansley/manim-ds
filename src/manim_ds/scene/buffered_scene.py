@@ -3,20 +3,28 @@ from itertools import chain
 
 from manim import Scene, config
 
+from manim_ds.action import Action
 from manim_ds.config import CONFIG
+
+
+def _hoist(action):
+    if not isinstance(action, Action):
+        action = Action(action, value=None)
+    return action
 
 
 class BufferedScene(Scene, abc.ABC):
     def __init__(self):
-        self.buffer = []
         super().__init__()
+        self.buffer = []
 
     def do(self, action):
+        action = _hoist(action)
         self.buffer.append(action.animations)
         return action.value
 
     def do_all(self, *actions):
-        self.buffer.append(chain(*(a.animations for a in actions)))
+        self.buffer.append(chain(*(_hoist(a).animations for a in actions)))
         return (a.value for a in actions)
 
     def set_size(self, width, height):

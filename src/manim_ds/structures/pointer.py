@@ -24,12 +24,10 @@ class Pointer(Polygon, BufferedMobject):
         if aligned_to is None:
             aligned_to = elt
         return Action(
-            None,
-            lambda e=elt, a=aligned_to:
-            (
+            lambda e=elt, a=aligned_to: (
                 self.animate
                 .next_to(e, -self.pointing)
                 .align_to(a, -self.pointing)
-                .shift(-self.pointing * DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)
-            )
+                .shift(-self.pointing * DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)),
+            value=None
         )

@@ -73,4 +73,3 @@ class SelectionSortOverviewScene(BufferedScene):
                 self.do(mlist.swap(i, min_idx))
         self.do(mlist[-1].shade(GREEN))
         self.do_all(*(elt.unshade() for elt in mlist))
-        self.set_size(7, 3)

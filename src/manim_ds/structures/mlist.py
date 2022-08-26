@@ -20,26 +20,20 @@ class MList(VGroup, BufferedMobject):
     def compare(self, cmp, i, j):
         elt1, elt2 = self[i], self[j]
         return Action(
-            cmp(elt1.data, elt2.data),
             elt1.shade(ORANGE),
             elt2.shade(ORANGE),
+            value=cmp(elt1.data, elt2.data)
         ).then(Mobject.shift, UP)
 
     def uncompare(self, i, j):
         elt1, elt2 = self[i], self[j]
         return Action(
-            None,
-            elt1.unshade(),
-            elt2.unshade(),
+            elt1.unshade(), elt2.unshade(), value=None
         ).then(Mobject.shift, DOWN)
 
     def swap(self, i, j):
         elt1, elt2 = self[i], self[j]
-        a = Action(
-            None,
-            elt1.shift_to(elt2),
-            elt2.shift_to(elt1),
-        )
+        a = Action(elt1.shift_to(elt2), elt2.shift_to(elt1), value=None)
         self[i], self[j] = self[j], self[i]
         return a
 
@@ -60,18 +54,18 @@ class _ListElement(Square):
 
     def shade(self, colour):
         return Action(
-            None,
-            lambda: self.animate.set_fill(colour, family=False)
+            lambda: self.animate.set_fill(colour, family=False),
+            value=None
         )
 
     def unshade(self):
         return Action(
-            None,
-            lambda: self.animate.set_fill(self.background, family=False)
+            lambda: self.animate.set_fill(self.background, family=False),
+            value=None
         )
 
     def shift_to(self, target):
         return Action(
-            None,
-            lambda: self.animate.shift(target.get_center() - self.get_center())
+            lambda: self.animate.shift(target.get_center() - self.get_center()),
+            value=None
         )
