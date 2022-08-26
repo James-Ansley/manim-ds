@@ -1,13 +1,13 @@
-from manim import DEFAULT_MOBJECT_TO_MOBJECT_BUFFER, Polygon, UP
+from manim import DEFAULT_MOBJECT_TO_MOBJECT_BUFFER, FadeIn, FadeOut, Polygon, \
+    UP
 
+from manim_ds.action import Action
 from manim_ds.config import CONFIG
 from manim_ds.scene import GLOBAL_ANIMATION_BUFFER as BUFFER
-from manim_ds.structures.mlist import BufferedMobject
 
 
-class Pointer(Polygon, BufferedMobject):
+class Pointer(Polygon):
     def __init__(self, side_length=1, pointing=UP, **kwargs):
-
         points = (
             [-side_length / 4, 0, 0],
             [side_length / 4, 0, 0],
@@ -20,10 +20,17 @@ class Pointer(Polygon, BufferedMobject):
         kwargs.setdefault("stroke_opacity", 1.0)
         super().__init__(*points, **kwargs)
 
+    def create(self):
+        return Action(self, lambda: FadeIn(self))
+
+    def uncreate(self):
+        return Action(self, lambda: FadeOut(self))
+
     def point_to(self, elt, aligned_to=None):
         if aligned_to is None:
             aligned_to = elt
-        BUFFER.push(
+        return Action(
+            None,
             lambda e=elt, a=aligned_to:
             (
                 self.animate

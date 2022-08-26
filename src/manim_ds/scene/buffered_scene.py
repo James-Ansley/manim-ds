@@ -1,10 +1,23 @@
+from itertools import chain
+
 from manim import Scene, config
 
 from manim_ds.config import CONFIG
-from manim_ds.scene.global_buffer import GLOBAL_ANIMATION_BUFFER
 
 
 class BufferedScene(Scene):
+    def __init__(self):
+        self.buffer = []
+        super().__init__()
+
+    def do(self, action):
+        self.buffer.append(action.animations)
+        return action.value
+
+    def do_all(self, *actions):
+        self.buffer.append(chain(*(a.animations for a in actions)))
+        return (a.value for a in actions)
+
     def set_size(self, width, height):
         pixel_width = CONFIG["pixelsPerUnit"] * width
         pixel_height = CONFIG["pixelsPerUnit"] * height
@@ -17,5 +30,5 @@ class BufferedScene(Scene):
 
     def construct(self):
         self.camera.background_color = CONFIG["background"]
-        for animations in GLOBAL_ANIMATION_BUFFER:
-            self.play(*animations)
+        for animations in self.buffer:
+            self.play(*(a() for a in animations))
