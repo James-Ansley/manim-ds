@@ -1,9 +1,11 @@
 from operator import lt
 
 from manim import *
+from manim import GREEN
 
 from manim_ds.scene import BufferedScene
 from manim_ds.structures import *
+from manim_ds.structures import MList
 
 
 class BubbleSortScene(BufferedScene):
@@ -57,7 +59,12 @@ class SelectionSortScene(BufferedScene):
 
 
 class SelectionSortOverviewScene(BufferedScene):
-    def selection_sort_overview(self, data):
+    def __init__(self):
+        super().__init__()
+        self.set_size(7, 3)
+
+    def _construct(self):
+        data = [4, 3, 2, 0, 1]
         mlist = self.do(MList(data).create())
         for i in range(len(mlist) - 1):
             min_idx = min(range(i, len(mlist)), key=lambda i: mlist[i].data)
@@ -66,8 +73,4 @@ class SelectionSortOverviewScene(BufferedScene):
                 self.do(mlist.swap(i, min_idx))
         self.do(mlist[-1].shade(GREEN))
         self.do_all(*(elt.unshade() for elt in mlist))
-
-    def construct(self):
-        self.selection_sort_overview([4, 3, 2, 0, 1])
         self.set_size(7, 3)
-        super().construct()

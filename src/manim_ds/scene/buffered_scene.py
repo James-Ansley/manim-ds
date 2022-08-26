@@ -1,3 +1,4 @@
+import abc
 from itertools import chain
 
 from manim import Scene, config
@@ -5,7 +6,7 @@ from manim import Scene, config
 from manim_ds.config import CONFIG
 
 
-class BufferedScene(Scene):
+class BufferedScene(Scene, abc.ABC):
     def __init__(self):
         self.buffer = []
         super().__init__()
@@ -30,5 +31,10 @@ class BufferedScene(Scene):
 
     def construct(self):
         self.camera.background_color = CONFIG["background"]
+        self._construct()
         for animations in self.buffer:
             self.play(*(a() for a in animations))
+
+    @abc.abstractmethod
+    def _construct(self):
+        ...
