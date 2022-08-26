@@ -58,14 +58,13 @@ class SelectionSortScene(BufferedScene):
 
 class SelectionSortOverviewScene(BufferedScene):
     def selection_sort_overview(self, data):
-        do = self.do
-        mlist = do(MList.from_iterable(data).create())
+        mlist = self.do(MList(data).create())
         for i in range(len(mlist) - 1):
             min_idx = min(range(i, len(mlist)), key=lambda i: mlist[i].data)
-            do(mlist[min_idx].shade(GREEN))
+            self.do(mlist[min_idx].shade(GREEN))
             if i != min_idx:
-                do(mlist.swap(i, min_idx))
-        do(mlist[-1].shade(GREEN))
+                self.do(mlist.swap(i, min_idx))
+        self.do(mlist[-1].shade(GREEN))
         self.do_all(*(elt.unshade() for elt in mlist))
 
     def construct(self):

@@ -1,8 +1,6 @@
-from collections.abc import Iterable
-
 from manim import *
-from manim import FadeIn
 
+from ._abc import BufferedMobject
 from ..action import Action
 from ..config import CONFIG
 
@@ -13,21 +11,11 @@ def _swap_mobjects(e1, e2):
     return e1.animate.shift(e2.get_center() - e1.get_center())
 
 
-class MList(VGroup):
-    def __init__(self, *vmobjects, **kwargs):
-        super().__init__(*vmobjects, **kwargs)
-        self.arrange_submobjects(buff=0)
-
-    def create(self):
-        return Action(self, lambda: FadeIn(self))
-
-    def uncreate(self):
-        return Action(self, lambda: FadeOut(self))
-
-    @classmethod
-    def from_iterable(cls, values: Iterable, **kwargs):
+class MList(VGroup, BufferedMobject):
+    def __init__(self, values, **kwargs):
         elements = (_ListElement(v) for v in values)
-        return cls(*elements, **kwargs)
+        super().__init__(*elements, **kwargs)
+        self.arrange_submobjects(buff=0)
 
     def compare(self, cmp, i, j):
         elt1, elt2 = self[i], self[j]
