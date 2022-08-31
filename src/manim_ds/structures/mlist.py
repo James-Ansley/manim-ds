@@ -27,13 +27,11 @@ class MList(VGroup, BufferedMobject):
 
     def uncompare(self, i, j):
         elt1, elt2 = self[i], self[j]
-        return Action(
-            elt1.unshade(), elt2.unshade(), value=None
-        ).then("shift", DOWN)
+        return Action(elt1.unshade(), elt2.unshade()).then("shift", DOWN)
 
     def swap(self, i, j):
         elt1, elt2 = self[i], self[j]
-        a = Action(elt1.shift_to(elt2), elt2.shift_to(elt1), value=None)
+        a = Action(elt1.shift_to(elt2), elt2.shift_to(elt1))
         self[i], self[j] = self[j], self[i]
         return a
 
@@ -55,17 +53,14 @@ class _ListElement(Square):
     def shade(self, colour):
         return Action(
             lambda: self.animate.set_fill(colour, family=False),
-            value=None
         )
 
     def unshade(self):
         return Action(
             lambda: self.animate.set_fill(self.background, family=False),
-            value=None
         )
 
     def shift_to(self, target):
         return Action(
             lambda: self.animate.shift(target.get_center() - self.get_center()),
-            value=None
         )
