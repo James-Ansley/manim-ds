@@ -12,7 +12,6 @@ class BubbleSortScene(ActionScene):
     def __init__(self):
         super().__init__()
         self.set_size(7, 3)
-        self.camera.background_color = CONFIG["background"]
 
     def construct(self):
         data = [3, 4, 2, 0, 1]
@@ -33,8 +32,6 @@ class SelectionSortScene(ActionScene):
     def __init__(self):
         super().__init__()
         self.set_size(7, 3)
-        self.camera.frame_center = [0, 0.3, 0]
-        self.camera.background_color = CONFIG["background"]
 
     def construct(self):
         do = self.do
