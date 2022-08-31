@@ -8,7 +8,7 @@ from manim_ds.config import CONFIG
 
 def _hoist(action):
     if not isinstance(action, Action):
-        action = Action(action, value=None)
+        action = Action(action)
     return action
 
 

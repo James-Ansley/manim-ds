@@ -1,9 +1,7 @@
-from _operator import lt
 from operator import lt
 
 from manim import DOWN, GREEN
 
-from manim_ds.config import CONFIG
 from manim_ds.scene import ActionScene
 from manim_ds.structures import MList, Pointer
 
@@ -14,9 +12,11 @@ class BubbleSortScene(ActionScene):
         self.set_size(7, 3)
 
     def construct(self):
-        data = [3, 4, 2, 0, 1]
+        mlist = MList([3, 4, 2, 0, 1])
         do = self.do
-        mlist = self.do(MList.from_iterable(data).create())
+        do_all = self.do_all
+
+        self.do(mlist.create())
         for i in range(len(mlist) - 1):
             for j in range(1, len(mlist) - i):
                 comparing = (j, j - 1)
@@ -25,7 +25,7 @@ class BubbleSortScene(ActionScene):
                 do(mlist.uncompare(*comparing))
             do(mlist[len(mlist) - i - 1].shade(GREEN))
         do(mlist[0].shade(GREEN))
-        self.do_all(*(e.unshade() for e in mlist))
+        do_all(*(e.unshade() for e in mlist))
 
 
 class SelectionSortScene(ActionScene):
@@ -63,12 +63,16 @@ class SelectionSortOverviewScene(ActionScene):
         self.set_size(7, 3)
 
     def construct(self):
-        data = [4, 3, 2, 0, 1]
-        mlist = self.do(MList(data).create())
+        do = self.do
+        do_all = self.do_all
+
+        mlist = MList([4, 3, 2, 0, 1])
+
+        do(mlist.create())
         for i in range(len(mlist) - 1):
             min_idx = min(range(i, len(mlist)), key=lambda i: mlist[i].data)
-            self.do(mlist[min_idx].shade(GREEN))
+            do(mlist[min_idx].shade(GREEN))
             if i != min_idx:
-                self.do(mlist.swap(i, min_idx))
-        self.do(mlist[-1].shade(GREEN))
-        self.do_all(*(elt.unshade() for elt in mlist))
+                do(mlist.swap(i, min_idx))
+        do(mlist[-1].shade(GREEN))
+        do_all(*(elt.unshade() for elt in mlist))

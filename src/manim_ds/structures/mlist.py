@@ -1,8 +1,8 @@
 from manim import *
 
+from manim_ds.action import Action
+from manim_ds.config import CONFIG
 from ._abc import ActionMobject
-from ..action import Action
-from ..config import CONFIG
 
 __all__ = ["MList"]
 
@@ -27,9 +27,8 @@ class MList(VGroup, ActionMobject):
 
     def swap(self, i, j):
         elt1, elt2 = self[i], self[j]
-        a = Action(elt1.shift_to(elt2), elt2.shift_to(elt1))
         self[i], self[j] = self[j], self[i]
-        return a
+        return Action(elt1.shift_to(elt2), elt2.shift_to(elt1))
 
 
 class _ListElement(Square):
@@ -47,14 +46,10 @@ class _ListElement(Square):
         self.background = kwargs["fill_color"]
 
     def shade(self, colour):
-        return Action(
-            self.animate.set_fill(colour, family=False),
-        )
+        return Action(self.animate.set_fill(colour, family=False))
 
     def unshade(self):
-        return Action(
-            self.animate.set_fill(self.background, family=False),
-        )
+        return Action(self.animate.set_fill(self.background, family=False))
 
     def shift_to(self, target):
         return Action(
