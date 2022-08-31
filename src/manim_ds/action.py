@@ -9,8 +9,7 @@ class Action:
     def then(self, animation, *args, **kwargs):
         # ToDo - There has to be a better way
         self.animations = (
-            lambda new=animation, a=a: getattr(a(), new)(*args, **kwargs)
-            for a in self.animations
+            getattr(a, animation)(*args, **kwargs) for a in self.animations
         )
         return self
 

@@ -3,10 +3,10 @@ from manim import DEFAULT_MOBJECT_TO_MOBJECT_BUFFER, Polygon, \
 
 from manim_ds.action import Action
 from manim_ds.config import CONFIG
-from manim_ds.structures._abc import BufferedMobject
+from manim_ds.structures._abc import ActionMobject
 
 
-class Pointer(Polygon, BufferedMobject):
+class Pointer(Polygon, ActionMobject):
     def __init__(self, side_length=1, pointing=UP, **kwargs):
         points = (
             [-side_length / 4, 0, 0],
@@ -24,10 +24,8 @@ class Pointer(Polygon, BufferedMobject):
         if aligned_to is None:
             aligned_to = elt
         return Action(
-            lambda e=elt, a=aligned_to: (
-                self.animate
-                .next_to(e, -self.pointing)
-                .align_to(a, -self.pointing)
-                .shift(-self.pointing * DEFAULT_MOBJECT_TO_MOBJECT_BUFFER)),
-            value=None
+            self.animate
+            .next_to(elt, -self.pointing)
+            .align_to(aligned_to, -self.pointing)
+            .shift(-self.pointing * DEFAULT_MOBJECT_TO_MOBJECT_BUFFER),
         )

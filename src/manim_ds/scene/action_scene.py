@@ -18,12 +18,12 @@ class ActionScene(Scene):
 
     def do(self, action):
         action = _hoist(action)
-        self.play(*(a() for a in action.animations))
+        self.play(*action.animations)
         return action.value
 
     def do_all(self, *actions):
         animations = chain(*(_hoist(a).animations for a in actions))
-        self.play(*(a() for a in animations))
+        self.play(*animations)
         return (a.value for a in actions)
 
     def set_size(self, width, height):

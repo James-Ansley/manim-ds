@@ -1,17 +1,13 @@
 from manim import *
 
-from ._abc import BufferedMobject
+from ._abc import ActionMobject
 from ..action import Action
 from ..config import CONFIG
 
 __all__ = ["MList"]
 
 
-def _swap_mobjects(e1, e2):
-    return e1.animate.shift(e2.get_center() - e1.get_center())
-
-
-class MList(VGroup, BufferedMobject):
+class MList(VGroup, ActionMobject):
     def __init__(self, values, **kwargs):
         elements = (_ListElement(v) for v in values)
         super().__init__(*elements, **kwargs)
@@ -52,15 +48,15 @@ class _ListElement(Square):
 
     def shade(self, colour):
         return Action(
-            lambda: self.animate.set_fill(colour, family=False),
+            self.animate.set_fill(colour, family=False),
         )
 
     def unshade(self):
         return Action(
-            lambda: self.animate.set_fill(self.background, family=False),
+            self.animate.set_fill(self.background, family=False),
         )
 
     def shift_to(self, target):
         return Action(
-            lambda: self.animate.shift(target.get_center() - self.get_center()),
+            self.animate.shift(target.get_center() - self.get_center()),
         )

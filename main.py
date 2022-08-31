@@ -37,7 +37,7 @@ class SelectionSortScene(ActionScene):
         do = self.do
         do_all = self.do_all
 
-        mlist = MList([4, 3, 2, 0, 1]).shift(DOWN / 2)
+        mlist = MList([4, 3, 2, 0, 1]).shift(DOWN / 3)
         pointer = Pointer().next_to(mlist[0], DOWN)
 
         do_all(mlist.create(), pointer.create())
