@@ -1,4 +1,6 @@
+pixelsPerUnit = 274
+
 background = "#FFFFFF"
 colour = "#000000"
-pixelsPerUnit = 274
-runTime = 0.1
+primary = "#83C167"
+secondary = "#FF862F"

@@ -16,8 +16,8 @@ class MList(VGroup, ActionMobject):
     def compare(self, cmp, i, j):
         elt1, elt2 = self[i], self[j]
         return Action(
-            elt1.shade(ORANGE),
-            elt2.shade(ORANGE),
+            elt1.shade(CONFIG["secondary"]),
+            elt2.shade(CONFIG["secondary"]),
             value=cmp(elt1.data, elt2.data)
         ).then("shift", UP)
 
